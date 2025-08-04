@@ -13,7 +13,7 @@ import AiAnalysisModal from './components/AiAnalysisModal';
 import TournamentDetailModal from './components/TournamentDetailModal';
 import PerformanceTimelineChart from './components/PerformanceTimelineChart';
 import { TrophyIcon, DollarSignIcon, BarChartIcon, HashIcon, ReceiptIcon, NetProfitIcon, RoiIcon, TimelineIcon } from './components/IconComponents';
-
+import Header from './components/Header';
 type FilterType = 'all' | '7d' | '30d';
 
 const App: React.FC = () => {
@@ -48,6 +48,11 @@ const App: React.FC = () => {
 
     loadData();
   }, []);
+      const { data: parsedResult } = Papa.parse<RawDataRow>(csvText, {
+      header: true,
+      skipEmptyLines: true,
+      transformHeader: header => header.trim(),
+    });
 
   const filteredData = useMemo(() => {
     if (filter === 'all') {
@@ -89,6 +94,12 @@ const App: React.FC = () => {
       setWidgets(initialWidgets);
   }, [initialWidgets]);
 
+  useEffect(() => {
+    fetchData();
+    const intervalId = setInterval(fetchData, REFRESH_INTERVAL);
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchData]);
 
   const kpiData = useMemo(() => {
     if (!filteredData || filteredData.length === 0) {
@@ -164,6 +175,62 @@ const App: React.FC = () => {
   }
 
   return (
+    <div className="min-h-screen text-gray-200 p-4 sm:p-6 lg:p-8 font-orbitron">
+      <Header onSync={fetchData} lastUpdated={lastUpdated} isLoading={isLoading} />
+      
+      {error && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+          <div className="bg-red-900/50 border border-red-500 p-8 rounded-lg text-center backdrop-blur-sm">
+            <h2 className="text-2xl text-red-400 mb-4">Error</h2>
+            <p>{error}</p>
+            <button
+              onClick={fetchData}
+              className="mt-6 px-4 py-2 bg-red-500/50 hover:bg-red-500 text-white rounded-md border border-red-400 transition-all duration-300"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )}
+
+      {isLoading && data.length === 0 && <LoadingSpinner />}
+      
+      {!isLoading && !error && data.length > 0 && (
+        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+          {kpiData && (
+            <>
+              <KpiCard title="Total Revenue" value={`$${kpiData.totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`} />
+              <KpiCard title="Avg. Win Rate" value={`${kpiData.avgWinRate.toFixed(1)}%`} />
+              <KpiCard title="Total Matches" value={kpiData.totalMatches.toLocaleString()} />
+              <KpiCard title="Avg. Daily Users" value={kpiData.avgDau.toLocaleString(undefined, {maximumFractionDigits: 0})} />
+            </>
+          )}
+
+          <div className="md:col-span-2 lg:col-span-4">
+            <RevenueChart data={data} />
+          </div>
+
+          <div className="md:col-span-2 lg:col-span-2">
+            <EngagementChart data={data} />
+          </div>
+
+          <div className="md:col-span-2 lg:col-span-2">
+            <ConversionFunnel data={funnelData} />
+          </div>
+
+        </main>
+      )}
+       {!isLoading && !error && data.length === 0 && (
+        <div className="flex items-center justify-center h-[calc(100vh-200px)]">
+            <div className="bg-black/50 backdrop-blur-sm border border-cyan-500/30 p-8 rounded-lg text-center">
+                <h2 className="text-2xl text-cyan-300 mb-4">No Data to Display</h2>
+                <p className="text-gray-400">Could not process any data rows from the Google Sheet.</p>
+                <p className="text-gray-400 mt-1">Please ensure the sheet is not empty and has the correct headers.</p>
+            </div>
+        </div>
+       )}
+    </div>
+  );
     <>
       <main className="min-h-screen bg-cyber-bg p-4 sm:p-6 lg:p-8 font-sans">
         <div className="absolute inset-0 z-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at top left, #22d3ee 0%, transparent 30%), radial-gradient(circle at bottom right, #ec4899 0%, transparent 40%)'}}></div>
