@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { DragHandleIcon } from './IconComponents';
 
@@ -14,11 +13,10 @@ interface HeaderProps {
   isLoading: boolean;
 }
 
-
 const DashboardCard: React.FC<DashboardCardProps> = ({ title, children, className = '', isDraggable = false }) => {
   return (
     <div
-      className={`bg-cyber-surface backdrop-blur-md border border-cyber-border rounded-lg shadow-2xl shadow-black/20 h-full flex flex-col transition-all duration-300 hover:border-cyber-neon-blue/50 ${className} ${isDraggable ? 'cursor-grab' : ''}`}
+      className={`bg-cyber-surface backdrop-blur-md border border-cyber-border rounded-lg shadow-2xl shadow-black/20 h-full flex flex-col transition-all duration-300 hover:border-cyber-neon-blue/50 ${className}`}
     >
       <header className="flex items-center justify-between p-4 sm:p-6 border-b border-cyber-border/50">
         <h3 className="text-lg font-bold text-cyber-text-primary">{title}</h3>
@@ -32,7 +30,8 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ title, children, classNam
     </div>
   );
 };
-const DashboardCard: React.FC<HeaderProps> = ({ onSync, lastUpdated, isLoading }) => {
+
+const DashboardHeader: React.FC<HeaderProps> = ({ onSync, lastUpdated, isLoading }) => {
   return (
     <header className="flex flex-col sm:flex-row justify-between items-center pb-4 border-b-2 border-fuchsia-500/30">
       <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500 drop-shadow-[0_0_5px_rgba(255,255,255,0.3)] mb-4 sm:mb-0">
@@ -67,4 +66,6 @@ const DashboardCard: React.FC<HeaderProps> = ({ onSync, lastUpdated, isLoading }
     </header>
   );
 };
+
+export { DashboardHeader };
 export default DashboardCard;
