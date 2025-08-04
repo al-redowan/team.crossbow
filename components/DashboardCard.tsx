@@ -32,7 +32,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ title, children, classNam
     </div>
   );
 };
-const Header: React.FC<HeaderProps> = ({ onSync, lastUpdated, isLoading }) => {
+const DashboardCard: React.FC<HeaderProps> = ({ onSync, lastUpdated, isLoading }) => {
   return (
     <header className="flex flex-col sm:flex-row justify-between items-center pb-4 border-b-2 border-fuchsia-500/30">
       <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500 drop-shadow-[0_0_5px_rgba(255,255,255,0.3)] mb-4 sm:mb-0">
