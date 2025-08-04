@@ -4,7 +4,7 @@ import { fetchTournamentData } from './services/googleSheetsService';
 import { analyzeTournamentData } from './services/aiService';
 import KpiCard from './components/KpiCard';
 import DashboardCard from './components/DashboardCard';
-import DashboardCard, { DashboardHeader } from './DashboardCard';
+import DashboardCard, { DashboardHeader } from './components//DashboardCard';
 import RevenueChart from './components/RevenueChart';
 import PerformancePieChart from './components/PerformancePieChart';
 import PositionDistributionBarChart from './components/PositionDistributionBarChart';
@@ -222,6 +222,17 @@ const App: React.FC = () => {
       </main>
       <AiAnalysisModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} isLoading={isAnalyzing} analysis={aiAnalysisResult} />
       <TournamentDetailModal isOpen={!!selectedTournament} onClose={() => setSelectedTournament(null)} tournament={selectedTournament} />
+      
+      )}
+       {!isLoading && !error && data.length === 0 && (
+        <div className="flex items-center justify-center h-[calc(100vh-200px)]">
+            <div className="bg-black/50 backdrop-blur-sm border border-cyan-500/30 p-8 rounded-lg text-center">
+                <h2 className="text-2xl text-cyan-300 mb-4">No Data to Display</h2>
+                <p className="text-gray-400">Could not process any data rows from the Google Sheet.</p>
+                <p className="text-gray-400 mt-1">Please ensure the sheet is not empty and has the correct headers.</p>
+            </div>
+        </div>
+       )}
     </>
   );
 };
