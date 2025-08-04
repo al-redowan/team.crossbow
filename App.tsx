@@ -4,7 +4,6 @@ import { fetchTournamentData } from './services/googleSheetsService';
 import { analyzeTournamentData } from './services/aiService';
 import KpiCard from './components/KpiCard';
 import DashboardCard from './components/DashboardCard';
-import DashboardCard, { DashboardHeader } from './components//DashboardCard';
 import RevenueChart from './components/RevenueChart';
 import PerformancePieChart from './components/PerformancePieChart';
 import PositionDistributionBarChart from './components/PositionDistributionBarChart';
@@ -75,11 +74,7 @@ const App: React.FC = () => {
       setIsAnalyzing(false);
     }
   };
-   const { data: parsedResult } = Papa.parse<RawDataRow>(csvText, {
-      DashboardHeader: true,
-      skipEmptyLines: true,
-      transformHeader: DashboardHeader => DashboardHeader.trim(),
-    });
+ ;
 
   const initialWidgets: Widget[] = useMemo(() => [
     { id: 'revenue', title: 'Revenue & Prize Trends', component: <RevenueChart data={filteredData} />, colSpan: 2 },
@@ -193,25 +188,7 @@ const App: React.FC = () => {
               <button onClick={handleAnalysis} disabled={isAnalyzing} className="px-4 py-2 rounded-lg bg-cyber-neon-blue/20 text-cyber-neon-blue border border-cyber-neon-blue/50 font-bold transition-all duration-300 hover:bg-cyber-neon-blue/30 hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0">
                 {isAnalyzing ? 'Analyzing...' : 'Analyze with AI'}
               </button>
-              </div>
-            <div className="min-h-screen text-gray-200 p-4 sm:p-6 lg:p-8 font-orbitron">
-      <DashboardHeader onSync={fetchData} lastUpdated={lastUpdated} isLoading={isLoading} />
-      
-      {error && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="bg-red-900/50 border border-red-500 p-8 rounded-lg text-center backdrop-blur-sm">
-            <h2 className="text-2xl text-red-400 mb-4">Error</h2>
-            <p>{error}</p>
-            <button
-              onClick={fetchData}
-              className="mt-6 px-4 py-2 bg-red-500/50 hover:bg-red-500 text-white rounded-md border border-red-400 transition-all duration-300"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      )}
-          </Header>
+         </Header>
 
           <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6 mb-6 animate-slide-in" style={{animationDelay: '100ms'}}>
             <KpiCard title="Total Winnings" value={`৳${kpiData.totalWinnings.toLocaleString()}`} icon={<DollarSignIcon />} />
