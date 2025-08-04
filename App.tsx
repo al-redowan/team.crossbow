@@ -4,6 +4,7 @@ import { fetchTournamentData } from './services/googleSheetsService';
 import { analyzeTournamentData } from './services/aiService';
 import KpiCard from './components/KpiCard';
 import DashboardCard from './components/DashboardCard';
+import DashboardCard, { DashboardHeader } from './DashboardCard';
 import RevenueChart from './components/RevenueChart';
 import PerformancePieChart from './components/PerformancePieChart';
 import PositionDistributionBarChart from './components/PositionDistributionBarChart';
