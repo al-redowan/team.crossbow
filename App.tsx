@@ -74,8 +74,7 @@ const App: React.FC = () => {
       setIsAnalyzing(false);
     }
   };
- ;
-
+  
   const initialWidgets: Widget[] = useMemo(() => [
     { id: 'revenue', title: 'Revenue & Prize Trends', component: <RevenueChart data={filteredData} />, colSpan: 2 },
     { id: 'performance', title: 'Win / Loss Performance', component: <PerformancePieChart data={filteredData} />, colSpan: 1 },
@@ -188,7 +187,8 @@ const App: React.FC = () => {
               <button onClick={handleAnalysis} disabled={isAnalyzing} className="px-4 py-2 rounded-lg bg-cyber-neon-blue/20 text-cyber-neon-blue border border-cyber-neon-blue/50 font-bold transition-all duration-300 hover:bg-cyber-neon-blue/30 hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0">
                 {isAnalyzing ? 'Analyzing...' : 'Analyze with AI'}
               </button>
-         </Header>
+            </div>
+          </header>
 
           <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6 mb-6 animate-slide-in" style={{animationDelay: '100ms'}}>
             <KpiCard title="Total Winnings" value={`৳${kpiData.totalWinnings.toLocaleString()}`} icon={<DollarSignIcon />} />
@@ -221,10 +221,8 @@ const App: React.FC = () => {
       </main>
       <AiAnalysisModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} isLoading={isAnalyzing} analysis={aiAnalysisResult} />
       <TournamentDetailModal isOpen={!!selectedTournament} onClose={() => setSelectedTournament(null)} tournament={selectedTournament} />
-         </>
+    </>
   );
 };
 
 export default App;
-
-      
