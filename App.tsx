@@ -13,7 +13,7 @@ import AiAnalysisModal from './components/AiAnalysisModal';
 import TournamentDetailModal from './components/TournamentDetailModal';
 import PerformanceTimelineChart from './components/PerformanceTimelineChart';
 import { TrophyIcon, DollarSignIcon, BarChartIcon, HashIcon, ReceiptIcon, NetProfitIcon, RoiIcon, TimelineIcon } from './components/IconComponents';
-import Header from './components/Header';
+import Header from './components/Header'; // Ensure Header is imported
 
 // Assuming these components are defined elsewhere and imported correctly
 // import EngagementChart from './components/EngagementChart';
@@ -63,7 +63,6 @@ const App: React.FC = () => {
   // Effect to fetch data on component mount.
   useEffect(() => {
     fetchData();
-    // Removed interval logic as REFRESH_INTERVAL was not defined.
     // If an interval sync is desired, REFRESH_INTERVAL should be defined and used here.
   }, [fetchData]); // fetchData is a dependency.
 
@@ -230,6 +229,7 @@ const App: React.FC = () => {
           <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
             {kpiData && (
               <>
+                {/* Note: Assuming kpiData has properties like totalRevenue, avgWinRate, totalMatches, avgDau */}
                 <KpiCard title="Total Revenue" value={`$${kpiData.totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`} />
                 <KpiCard title="Avg. Win Rate" value={`${kpiData.avgWinRate.toFixed(1)}%`} />
                 <KpiCard title="Total Matches" value={kpiData.totalMatches.toLocaleString()} />
@@ -238,20 +238,23 @@ const App: React.FC = () => {
             )}
 
             <div className="md:col-span-2 lg:col-span-4">
-              <RevenueChart data={data} /> {/* Using 'data' as per original snippet */}
+              <RevenueChart data={data} /> {/* Using 'data' as per original snippet, adjust if filteredData is intended */}
             </div>
 
             <div className="md:col-span-2 lg:col-span-2">
-              <EngagementChart data={data} /> {/* Using 'data' as per original snippet */}
+              {/* Assuming EngagementChart and ConversionFunnel components exist */}
+              {/* <EngagementChart data={data} /> */}
+              <div className="bg-gray-800 p-4 rounded-lg h-64 flex items-center justify-center">Engagement Chart Placeholder</div>
             </div>
 
             <div className="md:col-span-2 lg:col-span-2">
-              <ConversionFunnel data={data} /> {/* Using 'data' as per original snippet */}
+              {/* <ConversionFunnel data={data} /> */}
+              <div className="bg-gray-800 p-4 rounded-lg h-64 flex items-center justify-center">Conversion Funnel Placeholder</div>
             </div>
           </main>
 
           {/* Second section with draggable widgets */}
-          <div className="relative z-10 mt-6"> {/* Re-added parent wrapper for styling/positioning */}
+          <div className="relative z-10 mt-6">
             <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6 mb-6 animate-slide-in" style={{animationDelay: '100ms'}}>
               <KpiCard title="Total Winnings" value={`৳${kpiData.totalWinnings.toLocaleString()}`} icon={<DollarSignIcon />} />
               <KpiCard title="Total Cost" value={`৳${kpiData.totalEntryFee.toLocaleString()}`} icon={<ReceiptIcon />} color="pink" />
